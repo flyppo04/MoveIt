@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
 
 import it.unipi.di.sam.moveit.ui.screens.HomeScreen
+import it.unipi.di.sam.moveit.ui.screens.SettingScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController){
@@ -26,7 +27,7 @@ fun AppNavigation(navController: NavHostController){
 
         composable(route = "setting") {
             // Qui inseriremo il Composable dei Dettagli
-            //SettingScreen(onBack = {navController.popBackStack()})
+            SettingScreen(onBack = {navController.popBackStack()})
 
         }
 
