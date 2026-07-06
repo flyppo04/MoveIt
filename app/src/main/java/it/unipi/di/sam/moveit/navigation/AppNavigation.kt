@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
+import it.unipi.di.sam.moveit.ui.screens.CalibrationScreen
 
 import it.unipi.di.sam.moveit.ui.screens.HomeScreen
 import it.unipi.di.sam.moveit.ui.screens.SettingScreen
@@ -21,7 +22,8 @@ fun AppNavigation(navController: NavHostController){
             // Here is the composable function that creates the HomeScreen
             HomeScreen(onSettingsClick = {navController.navigate("setting")},
                        onPlayClick = {},
-                       onHistoryClick = {}
+                       onHistoryClick = {},
+                       onCalibrationClick = {navController.navigate("calibration")}
             )
         }
 
@@ -29,6 +31,10 @@ fun AppNavigation(navController: NavHostController){
             // Qui inseriremo il Composable dei Dettagli
             SettingScreen(onBack = {navController.popBackStack()})
 
+        }
+
+        composable(route = "calibration") {
+            CalibrationScreen(onBack = {navController.popBackStack()})
         }
 
     }
