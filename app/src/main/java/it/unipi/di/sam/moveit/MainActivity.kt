@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
+import it.unipi.di.sam.moveit.navigation.AppNavigation
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,17 +22,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MoveItTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                    val navController = rememberNavController()
+
+                    AppNavigation(navController)
+
             }
         }
     }
 }
 
+/*
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -44,4 +47,4 @@ fun GreetingPreview() {
     MoveItTheme {
         Greeting("Android")
     }
-}
+} */
