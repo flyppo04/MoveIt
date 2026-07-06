@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.Modifier
@@ -19,7 +20,8 @@ import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 @Composable
 fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
                onHistoryClick: () -> Unit,
-               onSettingsClick: () -> Unit
+               onSettingsClick: () -> Unit,
+               onCalibrationClick: () -> Unit
 ) {
     //main container for the home screen
     Box(
@@ -78,6 +80,18 @@ fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
             )
         }
 
+        IconButton(
+            onClick = onCalibrationClick,
+            modifier = Modifier
+                .align(Alignment.BottomStart) // La "attacchiamo" in alto a destra
+                .padding(16.dp)          // Un po' di margine dal bordo
+        ) {
+            Icon(
+                imageVector = Icons.Default.BugReport,
+                contentDescription = "Calibration"
+            )
+        }
+
     }
 
 
@@ -95,7 +109,8 @@ fun HomeScreenPreview() {
         HomeScreen(
             onPlayClick = {},
             onHistoryClick = {},
-            onSettingsClick = {}
+            onSettingsClick = {},
+            onCalibrationClick = {}
         )
     }
 }
