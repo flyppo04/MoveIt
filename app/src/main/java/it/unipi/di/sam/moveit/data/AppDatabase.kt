@@ -13,6 +13,8 @@ import androidx.room.Room // classe factory per creare/recuperare db
 // abstract perchè sara Room a creare i metodi reali per me, io li indico solo in modo astratto
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun gameDAO(): GameDAO
+
     // companion object serve ad avere metodi e proprità statiche (appartenenti alla classe e non all'istanza)
     // come gli ststic in java, qui la usiamo perchè è il modo per prendere dall'estreno il db
     // in modo che quetso sia unico (Singleton)
@@ -40,6 +42,5 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
     }
-
 
 }
