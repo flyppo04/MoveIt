@@ -1,7 +1,5 @@
 package it.unipi.di.sam.moveit.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,18 +20,35 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import it.unipi.di.sam.moveit.data.ThemePreferences
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingScreen(onBack: () -> Unit) {
+fun SettingScreen(onBack: () -> Unit, onCalibrationClick: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    // remember { } tiene stabile lo stesso Flow tra le ricomposizioni,
+    // invece di ricrearne uno nuovo ogni volta (stesso principio già usato
+    // per GameRepository in HistoryScreen)
+    val themeFlow = remember { ThemePreferences.themeFlow(context) }
+    val currentTheme by themeFlow.collectAsState(initial = ThemePreferences.TEMA_SYSTEM)
 
     Scaffold(
+
         topBar = {
             TopAppBar(
                 title = { Text("Impostazioni") },
@@ -61,31 +76,64 @@ fun SettingScreen(onBack: () -> Unit) {
                 modifier = Modifier.padding(bottom = 16.dp)
             )
 
-            Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
-            ) {
-                RadioButton(onClick = { /*TODO*/ }, selected = true)
+            Row(modifier = Modifier.padding(bottom = 16.dp)) {
+                RadioButton(
+                    selected = currentTheme == ThemePreferences.TEMA_LIGHT,
+                    onClick = {
+                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_LIGHT) }
+                    }
+                )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text( modifier = Modifier.align(Alignment.CenterVertically), text = "tema scuro", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    text = "tema chiaro",
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
 
-            Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
-            ) {
-                RadioButton(onClick = { /*TODO*/ }, selected = true)
+            Row(modifier = Modifier.padding(bottom = 16.dp)) {
+                RadioButton(
+                    selected = currentTheme == ThemePreferences.TEMA_DARK,
+                    onClick = {
+                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_DARK) }
+                    }
+                )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text( modifier = Modifier.align(Alignment.CenterVertically), text = "tema scuro", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    text = "tema scuro",
+                    style = MaterialTheme.typography.bodyLarge
+                )
             }
 
-            Row(
-                modifier = Modifier
-                    .padding(bottom = 16.dp),
-            ) {
-                RadioButton(onClick = { /*TODO*/ }, selected = true)
+            Row(modifier = Modifier.padding(bottom = 16.dp)) {
+                RadioButton(
+                    selected = currentTheme == ThemePreferences.TEMA_SYSTEM,
+                    onClick = {
+                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_SYSTEM) }
+                    }
+                )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text( modifier = Modifier.align(Alignment.CenterVertically), text = "tema chiaro", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    text = "segui il sistema",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            Text(
+                text = "Sezione Sviluppatore",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            Button(
+                onClick = onCalibrationClick,
+                modifier = Modifier
+                    .width(264.dp) // Larghezza fissa per estetica
+                    .height(40.dp) // Altezza fissa per estetica
+            ) {
+                Text(text = "Calibration/CratingJSON", fontSize = 16.sp)
             }
         }
     }
@@ -98,7 +146,8 @@ fun SettingScreen(onBack: () -> Unit) {
 fun SettingScreenPreview() {
     MoveItTheme() {
         SettingScreen(
-            onBack = {}
+            onBack = {},
+            onCalibrationClick = {}
         )
     }
 
