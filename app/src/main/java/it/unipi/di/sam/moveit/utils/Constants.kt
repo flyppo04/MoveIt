@@ -19,4 +19,10 @@ object Constants{
     const val PUNTEGGIO_GREZZO_MIN = 30.0
     const val PUNTEGGIO_GREZZO_MAX = 80.0
 
+    //Tema
+
+    const val TEMA_LIGHT = "light"
+    const val TEMA_DARK = "dark"
+    const val TEMA_SYSTEM = "system"
+
 }
