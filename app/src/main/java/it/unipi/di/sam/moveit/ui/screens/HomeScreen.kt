@@ -1,83 +1,85 @@
 package it.unipi.di.sam.moveit.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.IconButton
-import androidx.compose.ui.Modifier
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.material3.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 
 @Composable
-fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
-               onHistoryClick: () -> Unit,
-               onSettingsClick: () -> Unit,
-               //onCalibrationClick: () -> Unit
+fun HomeScreen(
+    onPlayClick: () -> Unit,
+    onHistoryClick: () -> Unit,
+    onSettingsClick: () -> Unit
 ) {
-    //main container for the home screen
+    // contenitore principale della home
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-    ){
+    ) {
 
-        Column( modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .align(Alignment.TopCenter)
-            .padding(),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.TopCenter)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Spacer(modifier = Modifier.height(160.dp))
 
-            Text(text = "MoveIt",
-                 style = MaterialTheme.typography.displayLarge,
-                 color = MaterialTheme.colorScheme.primary,
-                 fontSize = 96.sp, // forzato io ad avre testo più grande
-                 fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
+            Text(
+                text = "MoveIt",
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 96.sp,
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(240.dp))
 
-            // BOTTONE PLAY
+            // bottone play
             Button(
                 onClick = onPlayClick,
                 modifier = Modifier
-                    .width(240.dp) // Larghezza fissa per estetica
-                    .height(80.dp) // Altezza fissa per estetica
+                    .width(240.dp)
+                    .height(80.dp)
             ) {
                 Text(text = "PLAY", fontSize = 36.sp)
             }
+            
+            Spacer(modifier = Modifier.height(24.dp))
 
-            Spacer(modifier = Modifier.height(24.dp)) // Piccolo spazio tra i due bottoni
-
-            OutlinedButton( // versione del bottone solo bordo
+            // versione del bottone solo bordo
+            OutlinedButton(
                 onClick = onHistoryClick,
                 modifier = Modifier.width(184.dp)
             ) {
                 Text("HISTORY")
             }
-
         }
 
+        // icona impostazioni, ancorata in alto a destra con margine dalla status bar
         IconButton(
             onClick = onSettingsClick,
             modifier = Modifier
-                .align(Alignment.TopEnd) // La "attacchiamo" in alto a destra
+                .align(Alignment.TopEnd)
                 .statusBarsPadding()
                 .padding(8.dp)
-                .size(56.dp)// Un po' di margine dal bordo
+                .size(56.dp)
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
@@ -85,25 +87,20 @@ fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
                 tint = MaterialTheme.colorScheme.onBackground
             )
         }
-
     }
-
-
 }
 
 
-@Preview(name = "Light Mode" , showBackground = true, showSystemUi = true)
-@Preview(name = "Night Mode" , uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, showBackground = true, showSystemUi = true)
-
+@Preview(name = "Light Mode", showBackground = true, showSystemUi = true)
+@Preview(name = "Night Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES, showBackground = true, showSystemUi = true)
 @Composable
 fun HomeScreenPreview() {
-    val isDark = androidx.compose.foundation.isSystemInDarkTheme()
+    val isDark = isSystemInDarkTheme()
     MoveItTheme(darkTheme = isDark) {
-        // Qui passiamo delle funzioni "vuote" { } come mock
         HomeScreen(
             onPlayClick = {},
             onHistoryClick = {},
-            onSettingsClick = {},
+            onSettingsClick = {}
         )
     }
 }
