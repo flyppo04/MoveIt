@@ -1,10 +1,9 @@
 package it.unipi.di.sam.moveit.scoring
 
-import it.unipi.di.sam.moveit.sensor.MovementData
 import it.unipi.di.sam.moveit.sensor.SensorsMenager
 import it.unipi.di.sam.moveit.utils.Constants.INTERVALLO_CAMPIONAMENTO_MS
 
-class ReferenceRecorder(private val sensorsMenager: SensorsMenager){
+class MovesRecorder(private val sensorsMenager: SensorsMenager){
 
     private var startTime : Long = 0L
     private val recordedSamples = mutableListOf<MovementSample>()
