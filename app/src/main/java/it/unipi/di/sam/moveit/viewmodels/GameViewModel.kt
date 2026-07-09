@@ -1,7 +1,6 @@
 package it.unipi.di.sam.moveit.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.ViewModel
 import android.media.MediaPlayer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,15 +19,7 @@ import it.unipi.di.sam.moveit.scoring.songMovesReferenceLoader
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
-//(
-//    val loading : Boolean,
-//    val error : String,
-//    val countdown: Double,
-//    val Playing: Array<Double>,
-//    val Finished: Int
-//)
 
 sealed class GameUiState
 
@@ -53,14 +44,14 @@ class GameViewModel(val appContext: Application, val songId: String): AndroidVie
     private var song = songById(songId)
 
     private var player: MediaPlayer? = null
-    private var currentTime = 0L;
+    private var currentTime = 0L
 
     private var gameJob: Job? = null   // serve import kotlinx.coroutines.Job
 
     suspend fun loadReference() {
         val reference = songMovesReferenceLoader(appContext, songId)
         if (reference == null) {
-            _uiState.value = Error("...")
+            _uiState.value = Error("Impossibile caricare la coreografia di riferimento per questa canzone")
         } else {
             importedReference = reference
         }
@@ -117,11 +108,14 @@ class GameViewModel(val appContext: Application, val songId: String): AndroidVie
         }
     }
 
+    //gamejob cancelato pruima di arrivare a questa riga
     override fun onCleared(){
         super.onCleared()
         sensorManager.endListening()
         player?.release()
     }
+
+    // uscita esplicita a partita in corso a differenza di onCleared, qui va cancellato anche il job
 
     fun onEndGame(){
         gameJob?.cancel()

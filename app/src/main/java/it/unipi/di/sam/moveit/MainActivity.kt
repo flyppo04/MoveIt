@@ -26,12 +26,9 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
 
             // remember { } tiene stabile lo stesso Flow tra le ricomposizioni
-            // (stesso principio gia' usato in HistoryScreen/SettingScreen)
             val themeFlow = remember { ThemePreferences.themeFlow(context) }
             val currentTheme by themeFlow.collectAsState(initial = TEMA_SYSTEM)
 
-            // "system" (o un valore imprevisto/corrotto) ricade sul tema
-            // del sistema operativo, letto al volo con isSystemInDarkTheme()
             val useDarkTheme = when (currentTheme) {
                 TEMA_DARK -> true
                 TEMA_LIGHT -> false
