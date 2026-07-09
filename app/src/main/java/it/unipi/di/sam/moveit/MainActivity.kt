@@ -4,14 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import it.unipi.di.sam.moveit.data.ThemePreferences
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 import it.unipi.di.sam.moveit.navigation.AppNavigation
 
@@ -21,30 +20,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MoveItTheme {
+            val context = LocalContext.current
 
-                    val navController = rememberNavController()
+            // remember { } tiene stabile lo stesso Flow tra le ricomposizioni
+            // (stesso principio gia' usato in HistoryScreen/SettingScreen)
+            val themeFlow = remember { ThemePreferences.themeFlow(context) }
+            val currentTheme by themeFlow.collectAsState(initial = ThemePreferences.TEMA_SYSTEM)
 
-                    AppNavigation(navController)
+            // "system" (o un valore imprevisto/corrotto) ricade sul tema
+            // del sistema operativo, letto al volo con isSystemInDarkTheme()
+            val useDarkTheme = when (currentTheme) {
+                ThemePreferences.TEMA_DARK -> true
+                ThemePreferences.TEMA_LIGHT -> false
+                else -> isSystemInDarkTheme()
+            }
+
+            MoveItTheme(darkTheme = useDarkTheme) {
+
+                val navController = rememberNavController()
+
+                AppNavigation(navController)
 
             }
         }
     }
 }
-
-/*
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MoveItTheme {
-        Greeting("Android")
-    }
-} */
