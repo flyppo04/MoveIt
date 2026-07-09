@@ -1,5 +1,6 @@
 package it.unipi.di.sam.moveit.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +22,13 @@ import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
                onHistoryClick: () -> Unit,
                onSettingsClick: () -> Unit,
-               onCalibrationClick: () -> Unit
+               //onCalibrationClick: () -> Unit
 ) {
     //main container for the home screen
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ){
 
         Column( modifier = Modifier
@@ -72,23 +75,14 @@ fun HomeScreen(onPlayClick: () -> Unit,      // Definiamo cosa può succedere
             onClick = onSettingsClick,
             modifier = Modifier
                 .align(Alignment.TopEnd) // La "attacchiamo" in alto a destra
-                .padding(16.dp)          // Un po' di margine dal bordo
+                .statusBarsPadding()
+                .padding(8.dp)
+                .size(56.dp)// Un po' di margine dal bordo
         ) {
             Icon(
                 imageVector = Icons.Default.Settings,
-                contentDescription = "Impostazioni"
-            )
-        }
-
-        IconButton(
-            onClick = onCalibrationClick,
-            modifier = Modifier
-                .align(Alignment.BottomStart) // La "attacchiamo" in alto a destra
-                .padding(16.dp)          // Un po' di margine dal bordo
-        ) {
-            Icon(
-                imageVector = Icons.Default.BugReport,
-                contentDescription = "Calibration"
+                contentDescription = "Impostazioni",
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -110,7 +104,6 @@ fun HomeScreenPreview() {
             onPlayClick = {},
             onHistoryClick = {},
             onSettingsClick = {},
-            onCalibrationClick = {}
         )
     }
 }
