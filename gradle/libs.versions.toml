@@ -10,12 +10,13 @@ kotlin = "2.0.21"
 composeBom = "2024.09.00"
 
 navigationCompose = "2.8.5"
-room = "2.6.1"
+room = "2.7.0"
 datastore = "1.1.1"
 lifecycleViewmodelCompose = "2.8.7"
 materialIconsExtended = "1.7.5"
 kotlinxSerializationJson = "1.7.3"
 foundation = "1.11.4"
+uiGraphics = "1.11.4"
 
 
 [libraries]
@@ -44,6 +45,7 @@ androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lif
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
