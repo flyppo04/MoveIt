@@ -13,6 +13,7 @@ class MovesRecorder(private val sensorsMenager: SensorsMenager){
         recordedSamples.clear()
         var referenceTime = INTERVALLO_CAMPIONAMENTO_MS
 
+        // la callback è data al sensore che la chiama quando lui ha un nuovo dato e noi lo registriamo
         sensorsMenager.callback = {movementData ->
             val timestamp = System.currentTimeMillis() - startTime
             if (timestamp >= referenceTime) {

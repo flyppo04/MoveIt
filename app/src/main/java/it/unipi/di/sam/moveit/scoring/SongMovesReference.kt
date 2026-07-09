@@ -2,8 +2,10 @@ package it.unipi.di.sam.moveit.scoring
 
 import kotlinx.serialization.Serializable
 
-// Sfruttando Kotlin Serializable deve sìesstre esteso a tutte le strutture sottostanti in quanto anchesse andrano
-// trafromate in json
+// per usare kotlinx.serialization, @Serializable va applicato anche a tutte
+// le classi annidate (qui MovementSample e MovementData), altrimenti non
+// vengono convertite in json.
+
 @Serializable
 data class SongMovesReference (
     val songid: String,
