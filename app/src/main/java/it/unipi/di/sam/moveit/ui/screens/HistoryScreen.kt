@@ -36,10 +36,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-// Niente ViewModel: GameRepository non fa nulla di complesso da preservare
-// tra le ricomposizioni (nessuna macchina a stati come in GameViewModel),
-// quindi si costruisce direttamente qui con remember { } e si osserva il
-// Flow del database con collectAsState(initial = ...).
+// Non ho ritenuto necessario avere un ViewModel anche per questa schermata
+// non ci sono cose troppo complesse da preservare (bastano remember e flow del database)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(onBack: () -> Unit) {

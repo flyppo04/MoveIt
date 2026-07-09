@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import it.unipi.di.sam.moveit.data.Song
 import it.unipi.di.sam.moveit.data.Songs
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 

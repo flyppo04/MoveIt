@@ -43,8 +43,7 @@ import it.unipi.di.sam.moveit.viewmodels.Playing
 
 // Un solo composable: crea il GameViewModel, blocca l'orientamento e
 // disegna la UI in base allo stato. Nessuna preview (il ViewModel parte
-// da solo nel suo init {} con sensori/MediaPlayer veri) -- per vedere la
-// UI si fa girare il gioco vero su device/emulatore.
+// da solo nel suo init {} con sensori/MediaPlayer veri)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameScreen(songId: String, onExit: () -> Unit) {
