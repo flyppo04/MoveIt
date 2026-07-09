@@ -8,10 +8,10 @@ import it.unipi.di.sam.moveit.utils.Constants.TEMA_SYSTEM
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-// Property delegate: crea UN solo DataStore per tutta l'app, chiamato
-// "settings". Va dichiarata una volta sola a livello di file (non dentro
-// una classe/funzione) - tutte le letture/scritture nell'app useranno
-// sempre la stessa istanza.
+// Extension porpriety (Context.dataStore) e property delegateion :
+// aggiungiamo una proprietà a Context e delegiamo la funzione a ciò che ci trona preferencesDataStore
+// ossia un oggeto che crea un Datastore e poi ci fa usare sempre quell'istanza anche successivamente
+
 val Context.dataStore by preferencesDataStore(name = "settings")
 
 object ThemePreferences {
@@ -19,9 +19,8 @@ object ThemePreferences {
 
     private val KEY_TEMA = stringPreferencesKey("tema")
 
-    // Flow che emette il tema salvato ogni volta che cambia. Se non è mai
-    // stato salvato nulla (prima apertura dell'app), preferences[KEY_TEMA]
-    // è null e si usa TEMA_SYSTEM come default.
+    // emette il tema salvato ogni volta che cambia. Se non è mai
+    // stato salvato nulla si usa TEMA_SYSTEM come default.
     fun themeFlow(context: Context): Flow<String> =
         context.dataStore.data.map { preferences ->
             preferences[KEY_TEMA] ?: TEMA_SYSTEM

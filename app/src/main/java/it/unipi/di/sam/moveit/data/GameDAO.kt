@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
-//ciò che dice a room quali sono i metodi per leggere e scrivere sul database
-//si occupa di tradurre da kotlin a SQL e viceversa
+// ciò che dice a room quali sono i metodi per leggere e scrivere sul database
+// si occupa di tradurre da kotlin a SQL e viceversa
 @Dao
 interface GameDAO {
 

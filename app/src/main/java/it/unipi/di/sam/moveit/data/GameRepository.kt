@@ -2,7 +2,8 @@ package it.unipi.di.sam.moveit.data
 
 import kotlinx.coroutines.flow.Flow
 
-// repository si frappone fra viewmodel e dao in funzione di rendere i viewmodel indipendenti da sistema permanenza
+// repository si frappone fra viewmodel e dao in funzione di rendere i viewmodel
+// indipendenti da sistema di persistenza
 class GameRepository(private val dao: GameDAO) {
 
     fun AllGame(): Flow<List<Game>> = dao.tuttiGame()
