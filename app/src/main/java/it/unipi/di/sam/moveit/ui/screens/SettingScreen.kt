@@ -32,7 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import it.unipi.di.sam.moveit.data.ThemePreferences
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_DARK
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_LIGHT
 import kotlinx.coroutines.launch
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_SYSTEM
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +49,7 @@ fun SettingScreen(onBack: () -> Unit, onCalibrationClick: () -> Unit) {
     // invece di ricrearne uno nuovo ogni volta (stesso principio già usato
     // per GameRepository in HistoryScreen)
     val themeFlow = remember { ThemePreferences.themeFlow(context) }
-    val currentTheme by themeFlow.collectAsState(initial = ThemePreferences.TEMA_SYSTEM)
+    val currentTheme by themeFlow.collectAsState(initial = TEMA_SYSTEM)
 
     Scaffold(
 
@@ -78,9 +82,9 @@ fun SettingScreen(onBack: () -> Unit, onCalibrationClick: () -> Unit) {
 
             Row(modifier = Modifier.padding(bottom = 16.dp)) {
                 RadioButton(
-                    selected = currentTheme == ThemePreferences.TEMA_LIGHT,
+                    selected = currentTheme == TEMA_LIGHT,
                     onClick = {
-                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_LIGHT) }
+                        scope.launch { ThemePreferences.setTheme(context, TEMA_LIGHT) }
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -93,9 +97,9 @@ fun SettingScreen(onBack: () -> Unit, onCalibrationClick: () -> Unit) {
 
             Row(modifier = Modifier.padding(bottom = 16.dp)) {
                 RadioButton(
-                    selected = currentTheme == ThemePreferences.TEMA_DARK,
+                    selected = currentTheme == TEMA_DARK,
                     onClick = {
-                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_DARK) }
+                        scope.launch { ThemePreferences.setTheme(context, TEMA_DARK) }
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
@@ -108,9 +112,9 @@ fun SettingScreen(onBack: () -> Unit, onCalibrationClick: () -> Unit) {
 
             Row(modifier = Modifier.padding(bottom = 16.dp)) {
                 RadioButton(
-                    selected = currentTheme == ThemePreferences.TEMA_SYSTEM,
+                    selected = currentTheme == TEMA_SYSTEM,
                     onClick = {
-                        scope.launch { ThemePreferences.setTheme(context, ThemePreferences.TEMA_SYSTEM) }
+                        scope.launch { ThemePreferences.setTheme(context, TEMA_SYSTEM) }
                     }
                 )
                 Spacer(modifier = Modifier.width(8.dp))
