@@ -49,27 +49,27 @@ val MoveItRed = Color(0xFFEF476F)
 // ── LIGHT THEME ──────────────────────────────────────────────────────────────
 // Background: lo sfondo principale delle schermate nel tema chiaro.
 // Bianco caldo (leggermente panna) per non essere troppo freddo.
-val MoveItBackgroundLight = Color(0xFFFFFBF2)
+val MoveItBackgroundLight = Color(0xFFEDE3CE)
 
 // Surface: il colore delle card, bottom sheet, dialog nel tema chiaro.
-val MoveItSurfaceLight = Color(0xFFFFF3E0)
+val MoveItSurfaceLight = Color(0xFFF5E8D0)
 
 // On-colors: il colore del testo/icone SOPRA un colore di sfondo.
 // Su Primary (arancione) il testo deve essere bianco per contrasto sufficiente.
 val MoveItOnPrimary = Color(0xFFFFFFFF)
 
 // Su Background chiaro, testo scuro.
-val MoveItOnBackgroundLight = Color(0xFF1A0F00)
+val MoveItOnBackgroundLight = Color(0xFF3E2E1E)
 
 // ── DARK THEME ───────────────────────────────────────────────────────────────
 // Background scuro: bruno molto scuro, non nero puro (meno affaticante per gli occhi).
-val MoveItBackgroundDark = Color(0xFF1A1200)
+val MoveItBackgroundDark = Color(0xFF2B2419)   // bruno-carbone morbido, non nero
 
 // Surface scura: leggermente più chiara del background per creare profondità.
-val MoveItSurfaceDark = Color(0xFF2C1E00)
+val MoveItSurfaceDark = Color(0xFF3A311F)
 
 // Su Background scuro, testo chiaro.
-val MoveItOnBackgroundDark = Color(0xFFFFF3E0)
+val MoveItOnBackgroundDark = Color(0xFFEFE3CF)
 
 
 /*
