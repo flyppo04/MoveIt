@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 fun songMovesReferenceLoader(context: Context, songId: String ) :SongMovesReference? {
 
     val id = when(songId){
-        //"one_more_time" -> R.raw.one_more_time
+        "mueve_la_colita" -> R.raw.mueve_la_colita_moves
         else -> null
     } ?: return null
 
