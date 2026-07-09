@@ -13,6 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import it.unipi.di.sam.moveit.data.ThemePreferences
 import it.unipi.di.sam.moveit.ui.theme.MoveItTheme
 import it.unipi.di.sam.moveit.navigation.AppNavigation
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_DARK
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_LIGHT
+import it.unipi.di.sam.moveit.utils.Constants.TEMA_SYSTEM
 
 
 class MainActivity : ComponentActivity() {
@@ -25,13 +28,13 @@ class MainActivity : ComponentActivity() {
             // remember { } tiene stabile lo stesso Flow tra le ricomposizioni
             // (stesso principio gia' usato in HistoryScreen/SettingScreen)
             val themeFlow = remember { ThemePreferences.themeFlow(context) }
-            val currentTheme by themeFlow.collectAsState(initial = ThemePreferences.TEMA_SYSTEM)
+            val currentTheme by themeFlow.collectAsState(initial = TEMA_SYSTEM)
 
             // "system" (o un valore imprevisto/corrotto) ricade sul tema
             // del sistema operativo, letto al volo con isSystemInDarkTheme()
             val useDarkTheme = when (currentTheme) {
-                ThemePreferences.TEMA_DARK -> true
-                ThemePreferences.TEMA_LIGHT -> false
+                TEMA_DARK -> true
+                TEMA_LIGHT -> false
                 else -> isSystemInDarkTheme()
             }
 
