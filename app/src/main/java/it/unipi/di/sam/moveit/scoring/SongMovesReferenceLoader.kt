@@ -33,8 +33,4 @@ suspend fun songMovesReferenceLoader(context: Context, songId: String ) :SongMov
             throw e
         }
     }
-    //val rawResource = context.resources.openRawResource(id)
-    //val jsonResource = rawResource.bufferedReader().readText()
-    //val finalObject: SongMovesReference = Json.decodeFromString<SongMovesReference>(jsonResource)
-    //return finalObject
 }
