@@ -16,3 +16,4 @@ local.properties
 .kotlin/
 *.jks
 *.keystore
+app/src/main/res/raw/*.mp3
