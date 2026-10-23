@@ -10,15 +10,17 @@ import it.unipi.di.sam.moveit.data.GameRepository
 import it.unipi.di.sam.moveit.data.Songs.songById
 import it.unipi.di.sam.moveit.scoring.MovesRecorder
 import it.unipi.di.sam.moveit.scoring.ScoringEngine
-import it.unipi.di.sam.moveit.scoring.SongMovesReference
 import it.unipi.di.sam.moveit.sensor.SensorsMenager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import it.unipi.di.sam.moveit.scoring.songMovesReferenceLoader
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 sealed class GameUiState
@@ -37,75 +39,77 @@ class GameViewModel(val appContext: Application, val songId: String): AndroidVie
 
     private val sensorManager = SensorsMenager(appContext)
     private val movesRecorder = MovesRecorder(sensorManager)
-
     private val gameRepository = GameRepository(AppDatabase.getInstance(appContext).gameDAO())
-    private var importedReference: SongMovesReference?  = null
-
-    private var song = songById(songId)
-
     private var player: MediaPlayer? = null
-    private var currentTime = 0L
-
     private var gameJob: Job? = null   // serve import kotlinx.coroutines.Job
 
-    suspend fun loadReference() {
-        val reference = songMovesReferenceLoader(appContext, songId)
-        if (reference == null) {
-            _uiState.value = Error("Impossibile caricare la coreografia di riferimento per questa canzone")
-        } else {
-            importedReference = reference
-        }
-    }
 
     init {
         gameJob = viewModelScope.launch {
 
-            if(song == null) {_uiState.value = Error("Song not found"); return@launch}
-            player = MediaPlayer.create(appContext, song!!.audioResId)
-            if (player == null) { _uiState.value = Error("Impossibile caricare l'audio"); return@launch }
+            val song = songById(songId)
+            if (song == null) { _uiState.value = Error("Canzone non trovata"); return@launch }
 
-            loadReference()
+            player = MediaPlayer.create(appContext, song.audioResId)
+            val p = player;
+            if (p == null) { _uiState.value = Error("Impossibile caricare l'audio"); return@launch }
 
-            if (importedReference == null) {
-                return@launch
-            }
+
+            val reference = songMovesReferenceLoader(appContext, songId)
+            if (reference == null) { _uiState.value = Error("Impossibile recuperare riferimento canzone"); return@launch }
 
             sensorManager.startListening()
 
             for (i in 3 downTo 1) { _uiState.value = Countdown(i); delay(1000) }
 
-            player!!.start()
+            val finished = CompletableDeferred<Unit>()
+            p.setOnCompletionListener { finished.complete(Unit) }
 
-            _uiState.value = Playing(0, player!!.duration)
+            p.start()
 
             movesRecorder.startRecording()
 
-            while (currentTime < player!!.duration) {
 
-                currentTime += 1000
-                delay(1000)
-                _uiState.value = Playing(currentTime, player!!.duration)
-
+            val progressJob = launch {
+                while (true) {
+                    _uiState.value = Playing(p.currentPosition.toLong(), p.duration)
+                    delay(250)
+                }
             }
+
+            finished.await()
+            progressJob.cancel()
 
             val moves = movesRecorder.stopRecording()
 
             sensorManager.endListening()
 
-            val score = ScoringEngine.evaluateRecording(importedReference!!.moves, moves)
+            val score = withContext(Dispatchers.Default) {
+                ScoringEngine.evaluateRecording(reference.moves, moves)
+            }
+
+
             val finalScore = ScoringEngine.scaledScore(score)
             gameRepository.salva(
                 Game(
                     songId = songId,
-                    songTitle = song?.title ?: songId,
+                    songTitle = song.title,
                     score = finalScore,
-                    duration = player!!.duration,
+                    duration = p.duration,
                     timestamp = System.currentTimeMillis()
                 )
             )
             _uiState.value = Finished(finalScore)
 
         }
+    }
+
+    fun onAppStopped() {
+        val state = _uiState.value
+        if (state is Finished || state is Error) return
+
+        onEndGame()
+        _uiState.value = Error("Partita interrotta: l'app è andata in background")
     }
 
     //gamejob cancelato pruima di arrivare a questa riga

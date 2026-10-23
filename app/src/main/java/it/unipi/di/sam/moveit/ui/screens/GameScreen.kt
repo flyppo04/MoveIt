@@ -28,9 +28,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
@@ -48,6 +52,9 @@ import it.unipi.di.sam.moveit.viewmodels.Playing
 @Composable
 fun GameScreen(songId: String, onExit: () -> Unit) {
     val context = LocalContext.current
+    val view = LocalView.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     val activity = context as? Activity
     val application = context.applicationContext as Application
 
@@ -60,11 +67,21 @@ fun GameScreen(songId: String, onExit: () -> Unit) {
 
     // Stesso pattern gia' usato in CalibrationScreen: blocca l'orientamento in
     // portrait finche' la schermata e' visibile, poi lo ripristina.
-    DisposableEffect(Unit) {
+    DisposableEffect(lifecycleOwner) {
         val originalOrientation = activity?.requestedOrientation
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        view.keepScreenOn = true
+
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP && activity?.isChangingConfigurations != true) {
+                viewModel.onAppStopped()
+            }
+        }
+
         onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+            view.keepScreenOn = false
             activity?.requestedOrientation =
                 originalOrientation ?: ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
